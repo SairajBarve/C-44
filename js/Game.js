@@ -26,12 +26,12 @@ class Game{
             form = new Form()
             form.display();
         }
-        player1 = createSprite(200,width/2);
-        player1.addImage("player1",car1_img);
+        car1 = createSprite(100,200);
+        car1.addImage("car1",car1_img);
         
-        player2 = createSprite(400,width/2);
-        player2.addImage("player2", car2_img);
-        players=[player1,player2];
+        car2 = createSprite(400,width/2);
+        car2.addImage("player2", car2_img);
+        cars=[car1,car2];
     }
     
     play(){
@@ -39,20 +39,22 @@ class Game{
         form.hide();
 
         Player.getPlayerInfo();
-        image(back_img, 0, 0, 1000, 800);
+        
+        if(allPlayers ! == undefined) {
+        image(track, 0,-displayHeight*4,displayWidth, displayHeight*5);
         var x =100;
-        var y=200;
+        var y;
         var index =0;
-        drawSprites();
+        
 
         for(var plr in allPlayers){
         
             index = index+1;
-            x = 500-allPlayers[plr].distance;
-            y=500;
+            x = x + 200;
+           y = displayHeight - allPlayers[plr].distance;
             
-            players[index -1].x = x;
-            players[index - 1].y = y;
+            cars[index -1].x = x;
+            cars[index - 1].y = y;
 
             if(index === player.index){   
                 fill("black");
@@ -67,36 +69,23 @@ class Game{
             text("player1  : "+ allPlayers.player1.score,50,50)
            
             text("player2  : "+ allPlayers.player2.score,50,100)
-
+        }
 
         }
 
-        if (keyIsDown(RIGHT_ARROW) && player.index !== null) {
-            player.distance -= 10
-            player.update();
-        }
-        if (keyIsDown(LEFT_ARROW) && player.index !== null) {
-            player.distance += 10
-            player.update();
-        }
-
-        // Add code to destroy fruits, calculate scores and
-        // update the scores to the database
-
-
-        // Add code for game end condition
-
-        if(player.score >=10){
-            gameState=2;
-        }
+        if(keyIsDown(UP_ARROW) && player.index !== null){
+      player.distance +=10
+      player.update();
     }
 
-    end(){
-
-       // Add code to update game state and display Game Over
-       textSize(40)
-        text("game over",350,300)
-
-       
+    if(player.distance > 3860){
+      gameState = 2;
     }
+   
+    drawSprites();
+  }
+
+  end(){
+    console.log("Game Ended");
+  }
 }
